@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Permify</string>
     <string name="action_settings">Settings</string>
+    <string name="item_application_header">Application</string>
+    <string name="item_application_description">Using %d permissions</string>
+    <string name="image_content_description">ImageIcon</string>
 </resources>

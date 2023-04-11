@@ -1,11 +1,17 @@
-package com.aylax.permify
+package com.aylax.permify.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.aylax.permify.R
+import com.aylax.permify.data.model.Application
 import com.aylax.permify.databinding.ActivityMainBinding
+import com.aylax.permify.ui.adapter.ApplicationAdapter
+import com.aylax.permify.utils.Util
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +24,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val packageManager = packageManager
+        val apps = mutableListOf<Application>()
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+
+        packageManager.queryIntentActivities(intent, 0).forEach { resolveInfo ->
+            val appInfo = Application(
+                resolveInfo.loadLabel(packageManager).toString(),
+                resolveInfo.activityInfo.packageName,
+                resolveInfo.activityInfo.applicationInfo.loadIcon(packageManager)
+            )
+            apps.add(appInfo)
+        }
         setSupportActionBar(binding.toolbar)
+        Util.setToolbarFont(binding.toolbar)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = ApplicationAdapter(apps)
 
 
         /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
