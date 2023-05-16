@@ -9,8 +9,6 @@ import com.aylax.permify.databinding.ItemApplicationBinding
 
 class ApplicationAdapter(private val application: List<Application>) :
     RecyclerView.Adapter<ApplicationAdapter.AppViewHolder>() {
-    private lateinit var binding: ItemApplicationBinding
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val binding = ItemApplicationBinding.inflate(LayoutInflater.from(parent.context))
         return AppViewHolder(binding)
@@ -30,9 +28,11 @@ class ApplicationAdapter(private val application: List<Application>) :
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            binding.title.text = application.app_name
-            binding.description.text = application.pkg_name
-            binding.imageView.setImageDrawable(application.app_icon)
+            binding.apply {
+                title.text = application.app_name
+                description.text = application.pkg_name
+                imageView.setImageDrawable(application.app_icon)
+            }
         }
     }
 }
