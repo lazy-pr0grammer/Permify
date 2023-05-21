@@ -2,7 +2,7 @@ package com.aylax.permify.ui.activity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.aylax.permify.data.model.Application
+import com.aylax.library.model.Application
 import com.aylax.permify.data.repository.ApplicationRepository
 
 class MainViewModel : ViewModel() {

@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aylax.permify.ui.activity.MainActivity">
     <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="10"
+        android:title="@string/action_filter"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>

@@ -16,13 +16,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Permify"
+        android:theme="@style/Permify.DayNight"
         tools:targetApi="31">
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Permify"
+            android:theme="@style/Permify.DayNight"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

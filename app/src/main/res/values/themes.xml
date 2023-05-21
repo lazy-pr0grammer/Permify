@@ -1,15 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Permify.DayNight" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-    </style>
+    <style name="Permify.DayNight" parent="Theme.Material3.DayNight.NoActionBar" />
 
 
-    <style name="Permify" parent="Permify.DayNight" />
-    <style name="Permify.Title" parent="@style/Widget.Material3.Toolbar">
-        <item name="fontFamily">@font/manrope_bold</item>
-    </style>
 </resources>
