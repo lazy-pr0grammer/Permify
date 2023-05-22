@@ -8,4 +8,6 @@
     <string name="action_filter">Filter</string>
     <string name="item_permission">Permission</string>
     <string name="item_granted">Granted</string>
+    <string name="open_app">OpenApp</string>
+    <string name="com_test_package">com.test.package</string>
 </resources>

@@ -45,7 +45,7 @@ class ApplicationAdapter(
                         application.permissions.count { it.is_granted == false }
 
                 background.setCardBackgroundColor(SurfaceColors.SURFACE_1.getColor(title.context))
-                title.setOnClickListener {
+                background.setOnClickListener {
                     listener.onItemClicked(application)
                 }
             }

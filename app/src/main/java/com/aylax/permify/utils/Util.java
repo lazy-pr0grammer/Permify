@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import com.aylax.permify.R;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -21,7 +23,7 @@ public class Util {
     }
   }
 
-  public static void launchPackage(String pkg, Activity activity) {
+  public static void launchPackage(String pkg, @NonNull Activity activity) {
     Intent intent = activity.getPackageManager().getLaunchIntentForPackage(pkg);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     if (intent != null) activity.startActivity(intent);
