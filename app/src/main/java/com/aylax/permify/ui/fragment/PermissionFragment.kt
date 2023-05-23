@@ -1,28 +1,27 @@
 package com.aylax.permify.ui.fragment
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aylax.library.api.AppManager
-import com.aylax.library.util.Mode
+import com.aylax.library.model.Permission
 import com.aylax.permify.databinding.FragmentPermissionBinding
 import com.aylax.permify.ui.adapter.PermissionAdapter
 import com.aylax.permify.utils.Util
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.Serializable
 
 class PermissionFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentPermissionBinding
-    private lateinit var viewModel: PermissionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentPermissionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[PermissionViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -34,32 +33,34 @@ class PermissionFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    @Suppress("UNCHECKED_CAST", "DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val permissions: List<Permission> =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getSerializable("data", Serializable::class.java) as List<Permission>
+            } else {
+                arguments?.getSerializable("data") as List<Permission>
+            }
         val application =
             AppManager(requireContext()).getApplicationInfo(arguments?.getString("pkg", "")!!)
+        binding.textView.text = application.pkg_name
+        binding.textView2.text = application.app_name
+        binding.icon.setImageDrawable(application.app_icon)
+        binding.recyclerView.adapter = PermissionAdapter(permissions)
 
-        binding.apply {
-            pkg.text = application.pkg_name
-            name.text = application.app_name
-            icon.setImageDrawable(application.app_icon)
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            viewModel.getPermissions(requireArguments(), Mode.AUTO)
-                .observe(this@PermissionFragment) {
-                    recyclerView.adapter = PermissionAdapter(it)
+        binding.open.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle("Action")
+                setMessage("Are you sure you want to open this app?")
+                setPositiveButton("Sure") { _, _ ->
+                    Util.launchPackage(binding.textView.text.toString(), requireActivity())
                 }
-            open.setOnClickListener {
-                MaterialAlertDialogBuilder(requireContext()).apply {
-                    setTitle("Action")
-                    setMessage("Are you sure you want to open this app?")
-                    setPositiveButton("Sure") { _, _ ->
-                        Util.launchPackage(application.pkg_name, requireActivity())
-                    }
-                    setNegativeButton("Cancel") { _, _ ->
-                        this.create().dismiss()
-                    }
-                }.create().show()
-            }
+                setNegativeButton("Cancel") { _, _ ->
+                    dismiss()
+                }
+            }.create().show()
         }
     }
 

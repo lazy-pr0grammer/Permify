@@ -7,6 +7,5 @@ data class Application(
     var pkg_name: String? = "",
     var app_icon: Drawable? = null,
     var is_system: Boolean? = false,
-    var permissions: List<Permission> = emptyList(),
-    var trackers: List<Tracker> = emptyList()
+    var permissions: List<Permission> = emptyList()
 )
