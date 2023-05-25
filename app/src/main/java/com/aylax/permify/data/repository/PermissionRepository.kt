@@ -1,38 +1,35 @@
-package com.aylax.permify.data.repository;
+package com.aylax.permify.data.repository
 
-import android.os.Build;
-import android.os.Bundle;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import com.aylax.library.model.Permission;
-import com.aylax.library.util.Mode;
-import java.io.Serializable;
-import java.util.List;
+import android.os.Build
+import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.aylax.library.model.Permission
+import com.aylax.library.util.Mode.Companion.AUTO
+import com.aylax.library.util.Mode.Companion.DANGEROUS
+import java.io.Serializable
 
-public class PermissionRepository {
-  public PermissionRepository() {}
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
+class PermissionRepository {
+    fun getPermissions(bundle: Bundle, mode: Int): LiveData<List<Permission>?> {
+        val result = MutableLiveData<List<Permission>?>()
+        val permissions: List<Permission> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            bundle.getSerializable("data", Serializable::class.java) as List<Permission>
+        } else ({
+            bundle.getSerializable("data") as List<*>?
+        }) as List<Permission>
 
-  @SuppressWarnings("unchecked")
-  public LiveData<List<Permission>> getPermissions(Bundle bundle, int mode) {
-    MutableLiveData<List<Permission>> result = new MutableLiveData<>();
-    List<Permission> permissions;
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      permissions = (List<Permission>) bundle.getSerializable("data", Serializable.class);
-    } else {
-      permissions = (List<Permission>) bundle.getSerializable("data");
+        for (permission in permissions) {
+                if (mode == DANGEROUS) {
+                    if (permission.is_dangerous == true) {
+                        result.setValue(permissions)
+                    } else {
+                        result.setValue(permissions)
+                    }
+                } else if (mode == AUTO) {
+                    result.value = permissions
+                }
+            }
+        return result
     }
-    for (Permission permission : permissions) {
-      if (mode == Mode.Companion.getDANGEROUS()) {
-        if (Boolean.TRUE.equals(permission.is_dangerous())) {
-          result.setValue(permissions);
-        } else {
-          result.setValue(permissions);
-        }
-      } else if (mode == Mode.Companion.getAUTO()) {
-        result.setValue(permissions);
-      }
-    }
-    return result;
-  }
 }

@@ -1,4 +1,4 @@
-package com.aylax.permify.ui.adapter
+package com.aylax.permify.ui.main
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,11 +9,11 @@ import com.aylax.library.model.Application
 import com.aylax.permify.databinding.ItemApplicationBinding
 import com.google.android.material.elevation.SurfaceColors
 
-class ApplicationAdapter(
+class MainAdapter(
     private val application: List<Application>,
     private val listener: OnClickListener
 ) :
-    RecyclerView.Adapter<ApplicationAdapter.AppViewHolder>() {
+    RecyclerView.Adapter<MainAdapter.AppViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val binding = ItemApplicationBinding.inflate(LayoutInflater.from(parent.context))
         return AppViewHolder(binding)

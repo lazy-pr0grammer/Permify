@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PermissionInfo
 import android.os.Build
-import androidx.annotation.RequiresApi
 import com.aylax.library.model.Application
 import com.aylax.library.model.Permission
 
@@ -51,7 +50,6 @@ class AppManager(private var context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun getPermissions(pkg: String): List<Permission> {
         return try {
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -73,10 +71,10 @@ class AppManager(private var context: Context) {
                             permission, pkg
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
-                        grantedPermissions.add(Permission(permission, true))
+                        grantedPermissions.add(Permission(permission, pkg, true))
                     } else {
 
-                        grantedPermissions.add(Permission(permission, false))
+                        grantedPermissions.add(Permission(permission,pkg, false))
                     }
                 }
             }

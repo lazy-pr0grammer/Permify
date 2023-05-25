@@ -1,4 +1,4 @@
-package com.aylax.permify.ui.adapter
+package com.aylax.permify.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,11 +7,14 @@ import com.aylax.library.model.Permission
 import com.aylax.permify.databinding.ItemPermissionBinding
 import com.google.android.material.elevation.SurfaceColors
 
-class PermissionAdapter(private val permission: List<Permission>) :
+class PermissionAdapter(
+    private val permission: List<Permission>,
+    private val listener: OnClickListener
+) :
     RecyclerView.Adapter<PermissionAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemPermissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(permission: Permission) {
+        fun bind(permission: Permission, listener: OnClickListener) {
             binding.root.layoutParams = RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
@@ -21,6 +24,9 @@ class PermissionAdapter(private val permission: List<Permission>) :
                     "Granted"
                 } else {
                     "Denied"
+                }
+                background.setOnClickListener {
+                    listener.onItemClicked(permission)
                 }
                 background.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(title.context))
             }
@@ -37,8 +43,10 @@ class PermissionAdapter(private val permission: List<Permission>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(
-            permission[position]
-        )
+        holder.bind(permission[position], listener)
+    }
+
+    interface OnClickListener {
+        fun onItemClicked(permission: Permission)
     }
 }
