@@ -32,14 +32,13 @@ public class Util {
     try {
       Intent intent = context.getPackageManager().getLaunchIntentForPackage(pkg);
       intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-      if (intent != null) context.startActivity(intent);
-      else showToast(context, "Failed to open app!");
+      context.startActivity(intent);
     } catch (Exception e) {
       showToast(context, e.toString());
     }
   }
 
-  public static void openPackageSettings(String pkg, Context context) {
+  public static void openPackageSettings(String pkg, @NonNull Context context) {
     Intent intent =
         new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg));
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -33,8 +33,9 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
     }
 
     private fun designs() {
-        window.statusBarColor = SurfaceColors.SURFACE_2.getColor(this)
-        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
+        window.apply {
+            statusBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
+        }
         binding.apply {
             setSupportActionBar(toolbar)
             Util.setToolbarFont(toolbar)
