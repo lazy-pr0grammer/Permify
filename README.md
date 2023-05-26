@@ -29,3 +29,7 @@ I am always here to accept pull request.
 
 Please adhere to this project's `code of conduct`.
 
+## Donation and Funding
+By sending donations, the senders agree that they shall not use the donations as leverage to prioritise their requested features!
+Support me https://opencollective.com/permify
+
