@@ -45,7 +45,7 @@ class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClic
             pkg.text = app.pkg_name
             viewModel.getPermissions(requireArguments(), Mode.AUTO)
                 .observe(this@PermissionFragment) {
-                    recyclerView.adapter = PermissionAdapter(it, this@PermissionFragment)
+                    recyclerView.adapter = it?.let { it1 -> PermissionAdapter(it1, this@PermissionFragment) }
                 }
             open.setOnClickListener {
                 MaterialAlertDialogBuilder(requireContext()).apply {

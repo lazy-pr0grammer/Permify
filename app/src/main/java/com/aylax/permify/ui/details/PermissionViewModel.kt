@@ -11,7 +11,7 @@ class PermissionViewModel : ViewModel() {
     fun getPermissions(
         bundle: Bundle,
         mode: Int
-    ): LiveData<List<Permission>> {
+    ): LiveData<List<Permission>?> {
         return DataManager.getInstance().permissionRepository.getPermissions(bundle, mode)
     }
 }
