@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.aylax.permify'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.aylax.permify"
         minSdk 22
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 

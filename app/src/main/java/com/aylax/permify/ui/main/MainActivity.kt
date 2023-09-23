@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aylax.library.model.Application
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
             setSupportActionBar(toolbar)
             Util.setToolbarFont(toolbar)
             recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-            viewModel.loadApplications(system = false).observe(this@MainActivity) {
+            viewModel.loadApplications(applicationContext, false).observe(this@MainActivity) {
                 recyclerView.adapter = MainAdapter(it, this@MainActivity)
                 recyclerView.visibility = View.VISIBLE
                 indicator.visibility = View.GONE
@@ -56,27 +54,25 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
             setTitle("Filter")
             setItems(options) { _: DialogInterface, i: Int ->
                 when (i) {
-                    0 ->
-                        binding.apply {
-                            recyclerView.visibility = View.GONE
-                            indicator.visibility = View.VISIBLE
-                            viewModel.loadApplications(false).observe(this@MainActivity) {
-                                recyclerView.adapter = MainAdapter(it, this@MainActivity)
-                                recyclerView.visibility = View.VISIBLE
-                                indicator.visibility = View.GONE
-                            }
+                    0 -> binding.apply {
+                        recyclerView.visibility = View.GONE
+                        indicator.visibility = View.VISIBLE
+                        viewModel.loadApplications(context, false).observe(this@MainActivity) {
+                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.visibility = View.VISIBLE
+                            indicator.visibility = View.GONE
                         }
+                    }
 
-                    1 ->
-                        binding.apply {
-                            recyclerView.visibility = View.GONE
-                            indicator.visibility = View.VISIBLE
-                            viewModel.loadApplications(true).observe(this@MainActivity) {
-                                recyclerView.adapter = MainAdapter(it, this@MainActivity)
-                                recyclerView.visibility = View.VISIBLE
-                                indicator.visibility = View.GONE
-                            }
+                    1 -> binding.apply {
+                        recyclerView.visibility = View.GONE
+                        indicator.visibility = View.VISIBLE
+                        viewModel.loadApplications(context, true).observe(this@MainActivity) {
+                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.visibility = View.VISIBLE
+                            indicator.visibility = View.GONE
                         }
+                    }
                 }
             }
         }.create().show()
@@ -106,7 +102,7 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
     override fun onItemClicked(app: Application) {
         PermissionFragment().apply {
             val bundle = Bundle()
-            bundle.putString("pkg", app.pkg_name)
+            bundle.putString("pkg", app.pkgName)
             bundle.putSerializable("data", ArrayList(app.permissions))
             arguments = bundle
             show(supportFragmentManager, this.javaClass.name)

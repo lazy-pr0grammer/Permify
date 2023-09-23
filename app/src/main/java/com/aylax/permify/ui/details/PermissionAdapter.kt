@@ -8,10 +8,8 @@ import com.aylax.permify.databinding.ItemPermissionBinding
 import com.google.android.material.elevation.SurfaceColors
 
 class PermissionAdapter(
-    private val permission: List<Permission>,
-    private val listener: OnClickListener
-) :
-    RecyclerView.Adapter<PermissionAdapter.ViewHolder>() {
+    private val permission: List<Permission>, private val listener: OnClickListener
+) : RecyclerView.Adapter<PermissionAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemPermissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(permission: Permission, listener: OnClickListener) {
@@ -20,7 +18,7 @@ class PermissionAdapter(
             )
             binding.apply {
                 title.text = permission.name
-                description.text = if (permission.is_granted == true) {
+                description.text = if (permission.isGranted == true) {
                     "Granted"
                 } else {
                     "Denied"

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <FrameLayout
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="322dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,23 +37,25 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/manrope_bold"
                 android:text="@string/app_name"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/open"
                 app:layout_constraintStart_toEndOf="@+id/icon"
                 app:layout_constraintTop_toBottomOf="@+id/dragger" />
 
             <TextView
                 android:id="@+id/pkg"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/manrope_medium"
                 android:text="@string/com_test_package"
                 android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/open"
                 app:layout_constraintStart_toEndOf="@+id/icon"
                 app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -61,25 +63,30 @@
                 android:id="@+id/open"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/open_app"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:layout_marginEnd="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_open_in_new"
                 app:layout_constraintBottom_toTopOf="@+id/pkg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dragger"
-                app:tint="@android:color/darker_gray"
-                tools:targetApi="s" />
+                app:tint="@android:color/darker_gray" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="112dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/icon" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
