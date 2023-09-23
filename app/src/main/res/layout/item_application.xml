@@ -34,10 +34,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_marginStart="9dp"
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
                 android:fontFamily="@font/manrope_bold"
                 android:text="@string/item_application_header"
                 android:textSize="16sp"

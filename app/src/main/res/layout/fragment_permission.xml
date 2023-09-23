@@ -8,7 +8,7 @@
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="333dp"
+        android:minHeight="322dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,10 +63,10 @@
                 android:id="@+id/open"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/open_app"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:layout_marginEnd="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_open_in_new"
                 app:layout_constraintBottom_toTopOf="@+id/pkg"
@@ -80,9 +80,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false"
+                android:paddingBottom="112dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/icon" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

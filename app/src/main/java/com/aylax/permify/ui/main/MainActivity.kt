@@ -54,27 +54,25 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
             setTitle("Filter")
             setItems(options) { _: DialogInterface, i: Int ->
                 when (i) {
-                    0 ->
-                        binding.apply {
-                            recyclerView.visibility = View.GONE
-                            indicator.visibility = View.VISIBLE
-                            viewModel.loadApplications(context, false).observe(this@MainActivity) {
-                                recyclerView.adapter = MainAdapter(it, this@MainActivity)
-                                recyclerView.visibility = View.VISIBLE
-                                indicator.visibility = View.GONE
-                            }
+                    0 -> binding.apply {
+                        recyclerView.visibility = View.GONE
+                        indicator.visibility = View.VISIBLE
+                        viewModel.loadApplications(context, false).observe(this@MainActivity) {
+                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.visibility = View.VISIBLE
+                            indicator.visibility = View.GONE
                         }
+                    }
 
-                    1 ->
-                        binding.apply {
-                            recyclerView.visibility = View.GONE
-                            indicator.visibility = View.VISIBLE
-                            viewModel.loadApplications(context, true).observe(this@MainActivity) {
-                                recyclerView.adapter = MainAdapter(it, this@MainActivity)
-                                recyclerView.visibility = View.VISIBLE
-                                indicator.visibility = View.GONE
-                            }
+                    1 -> binding.apply {
+                        recyclerView.visibility = View.GONE
+                        indicator.visibility = View.VISIBLE
+                        viewModel.loadApplications(context, true).observe(this@MainActivity) {
+                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.visibility = View.VISIBLE
+                            indicator.visibility = View.GONE
                         }
+                    }
                 }
             }
         }.create().show()
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
     override fun onItemClicked(app: Application) {
         PermissionFragment().apply {
             val bundle = Bundle()
-            bundle.putString("pkg", app.pkg_name)
+            bundle.putString("pkg", app.pkgName)
             bundle.putSerializable("data", ArrayList(app.permissions))
             arguments = bundle
             show(supportFragmentManager, this.javaClass.name)

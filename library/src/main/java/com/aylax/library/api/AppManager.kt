@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.pm.PermissionInfo
 import android.os.Build
 import com.aylax.library.model.Application
 import com.aylax.library.model.Permission
@@ -21,25 +20,25 @@ class AppManager(private var context: Context) {
                     )
                 )
             } else {
-                @Suppress("DEPRECATION") context.packageManager.getInstalledApplications(
+                context.packageManager.getInstalledApplications(
                     PackageManager.GET_META_DATA
                 )
             }
             val applications = mutableListOf<Application>()
             for (info in applicationsList) {
                 val app = Application()
-                app.pkg_name = info.packageName
-                app.app_icon = info.loadIcon(context.packageManager)
-                app.app_name = info.loadLabel(context.packageManager).toString()
+                app.pkgName = info.packageName
+                app.appIcon = info.loadIcon(context.packageManager)
+                app.appName = info.loadLabel(context.packageManager).toString()
                 app.permissions = getPermissions(info.packageName)
                 if (system) {
                     if (info.flags and ApplicationInfo.FLAG_SYSTEM != 0) {
-                        app.is_system = true
+                        app.isSystem = true
                         applications.add(app)
                     }
                 } else {
                     if (info.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-                        app.is_system = false
+                        app.isSystem = false
                         applications.add(app)
                     }
                 }
@@ -50,16 +49,15 @@ class AppManager(private var context: Context) {
         }
     }
 
-    fun getPermissions(pkg: String): List<Permission> {
+    private fun getPermissions(pkg: String): List<Permission> {
         return try {
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 context.packageManager.getPackageInfo(
                     pkg, PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong())
                 )
             } else {
-                @Suppress("DEPRECATION") context.packageManager.getPackageInfo(
-                    pkg,
-                    PackageManager.GET_PERMISSIONS
+                context.packageManager.getPackageInfo(
+                    pkg, PackageManager.GET_PERMISSIONS
                 )
             }
             val requestedPermissions = packageInfo.requestedPermissions
@@ -74,7 +72,7 @@ class AppManager(private var context: Context) {
                         grantedPermissions.add(Permission(permission, pkg, true))
                     } else {
 
-                        grantedPermissions.add(Permission(permission,pkg, false))
+                        grantedPermissions.add(Permission(permission, pkg, false))
                     }
                 }
             }
@@ -89,11 +87,9 @@ class AppManager(private var context: Context) {
     fun getApplicationInfo(pkg: String): Application {
         val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.packageManager.getApplicationInfo(
-                pkg,
-                PackageManager.ApplicationInfoFlags.of(0)
+                pkg, PackageManager.ApplicationInfoFlags.of(0)
             )
         } else {
-            @Suppress("DEPRECATION")
             context.packageManager.getApplicationInfo(pkg, 0)
         }
         return Application(
@@ -103,19 +99,6 @@ class AppManager(private var context: Context) {
             appInfo.flags != 0,
             emptyList()
         )
-    }
-
-    private fun isDangerousPermission(permission: String): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            context.packageManager.getPermissionInfo(
-                permission, PackageManager.GET_META_DATA
-            ).protection == PermissionInfo.PROTECTION_DANGEROUS
-        } else {
-            @Suppress("DEPRECATION")
-            context.packageManager.getPermissionInfo(
-                permission, PackageManager.GET_META_DATA
-            ).protectionLevel == PermissionInfo.PROTECTION_DANGEROUS
-        }
     }
 
 }

@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aylax.library.api.AppManager
 import com.aylax.library.model.Permission
-import com.aylax.library.util.Mode
 import com.aylax.permify.databinding.FragmentPermissionBinding
 import com.aylax.permify.utils.Util
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClickListener {
     private lateinit var binding: FragmentPermissionBinding
@@ -26,9 +25,7 @@ class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClic
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         return binding.root
@@ -40,19 +37,20 @@ class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClic
 
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            icon.setImageDrawable(app.app_icon)
-            name.text = app.app_name
-            pkg.text = app.pkg_name
-            viewModel.getPermissions(requireArguments(), Mode.AUTO)
-                .observe(this@PermissionFragment) {
-                    recyclerView.adapter = it?.let { it1 -> PermissionAdapter(it1, this@PermissionFragment) }
-                }
+            icon.setImageDrawable(app.appIcon)
+            name.text = app.appName
+            pkg.text = app.pkgName
+            viewModel.getPermissions(requireArguments(), 1).observe(this@PermissionFragment) {
+                recyclerView.adapter =
+                    it?.let { it1 -> PermissionAdapter(it1, this@PermissionFragment) }
+            }
+
             open.setOnClickListener {
                 MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle("Action")
                     setMessage("Are you sure you want to open this app?")
                     setPositiveButton("Sure") { _, _ ->
-                        Util.launchPackage(app.pkg_name, requireContext())
+                        Util.launchPackage(app.pkgName, requireContext())
                     }
                     setNegativeButton("Cancel") { _, _ ->
                         dismiss()
@@ -69,7 +67,7 @@ class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClic
             window?.setDimAmount(0.4f)
             setOnShowListener {
                 val bottomSheet =
-                    findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
+                    findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
                 bottomSheet.setBackgroundResource(android.R.color.transparent)
             }
         }
@@ -80,7 +78,7 @@ class PermissionFragment : BottomSheetDialogFragment(), PermissionAdapter.OnClic
             setTitle("Action")
             setMessage("Are you sure you want to view the app details?")
             setPositiveButton("Sure") { _, _ ->
-                Util.openPackageSettings(permission.pkg_name, requireContext())
+                Util.openPackageSettings(permission.pkgName, requireContext())
             }
             setNegativeButton("Cancel") { _, _ ->
                 dismiss()

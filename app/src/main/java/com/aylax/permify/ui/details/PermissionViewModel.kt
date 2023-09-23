@@ -9,8 +9,7 @@ import com.aylax.permify.data.DataManager
 class PermissionViewModel : ViewModel() {
 
     fun getPermissions(
-        bundle: Bundle,
-        mode: Int
+        bundle: Bundle, mode: Int
     ): LiveData<List<Permission>?> {
         return DataManager.getInstance().permissionRepository.getPermissions(bundle, mode)
     }

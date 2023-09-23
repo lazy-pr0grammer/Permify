@@ -3,7 +3,7 @@ package com.aylax.permify.utils
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-class DiskExecutor() : Executor {
+class DiskExecutor : Executor {
     private val executor: Executor
 
     init {
