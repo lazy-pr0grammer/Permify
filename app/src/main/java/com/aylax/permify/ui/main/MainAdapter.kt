@@ -9,8 +9,10 @@ import com.aylax.permify.databinding.ItemApplicationBinding
 import com.google.android.material.elevation.SurfaceColors
 
 class MainAdapter(
-    private val application: List<Application>, private val listener: OnClickListener
+    private val applications: List<Application>, private val listener: OnClickListener
 ) : RecyclerView.Adapter<MainAdapter.AppViewHolder>() {
+
+    private var searchApplication = applications
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val binding =
             ItemApplicationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,24 +20,32 @@ class MainAdapter(
     }
 
     override fun getItemCount(): Int {
-        return application.size
+        return searchApplication.size
     }
 
     override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
         holder.binding.apply {
-            title.text = application[position].appName
-            imageView.setImageDrawable(application[position].appIcon)
+            val application = searchApplication[position]
+            title.text = application.appName
+            imageView.setImageDrawable(application.appIcon)
             description.text = "Granted ${
-                application[position].permissions.count {
+                application.permissions.count {
                     it.isGranted == true
                 }
-            }, Denied ${application[position].permissions.count { it.isGranted == false }}"
+            }, Denied ${application.permissions.count { it.isGranted == false }}"
 
             background.setCardBackgroundColor(SurfaceColors.SURFACE_1.getColor(title.context))
             background.setOnClickListener {
-                listener.onItemClicked(application[position])
+                listener.onItemClicked(application)
             }
         }
+    }
+
+    fun onSearchItem(query: String) {
+        searchApplication = applications.filter { application ->
+            application.appName!!.contains(query, true)
+        }
+        notifyDataSetChanged()
     }
 
     class AppViewHolder(val binding: ItemApplicationBinding) : ViewHolder(binding.root)
