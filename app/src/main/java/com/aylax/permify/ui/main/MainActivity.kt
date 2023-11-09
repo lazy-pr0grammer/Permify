@@ -6,8 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aylax.library.model.Application
 import com.aylax.permify.R
 import com.aylax.permify.databinding.ActivityMainBinding
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +38,9 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
         binding.apply {
             setSupportActionBar(toolbar)
             Util.setToolbarFont(toolbar)
-            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
             viewModel.loadApplications(applicationContext, false).observe(this@MainActivity) {
-                recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                adapter = MainAdapter(it, this@MainActivity)
+                recyclerView.adapter = adapter
                 recyclerView.visibility = View.VISIBLE
                 indicator.visibility = View.GONE
             }
@@ -58,7 +59,8 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
                         recyclerView.visibility = View.GONE
                         indicator.visibility = View.VISIBLE
                         viewModel.loadApplications(context, false).observe(this@MainActivity) {
-                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.adapter = adapter
                             recyclerView.visibility = View.VISIBLE
                             indicator.visibility = View.GONE
                         }
@@ -68,7 +70,8 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
                         recyclerView.visibility = View.GONE
                         indicator.visibility = View.VISIBLE
                         viewModel.loadApplications(context, true).observe(this@MainActivity) {
-                            recyclerView.adapter = MainAdapter(it, this@MainActivity)
+                            adapter = MainAdapter(it, this@MainActivity)
+                            recyclerView.adapter = adapter
                             recyclerView.visibility = View.VISIBLE
                             indicator.visibility = View.GONE
                         }
@@ -86,6 +89,19 @@ class MainActivity : AppCompatActivity(), MainAdapter.OnClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchView: SearchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (this@MainActivity::adapter.isInitialized) adapter.onSearchItem(newText)
+                return false
+            }
+        })
+
         return true
     }
 
